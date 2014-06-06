@@ -1,0 +1,4 @@
+<%= content_tag_for(:li, category, :class => "filter", :data => { :filter => ".#{category.title.parameterize}" }) do %>
+  <%= category.title %>
+  <span class="border border-bottom"></span>
+<% end %>

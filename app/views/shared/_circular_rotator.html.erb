@@ -1,0 +1,15 @@
+<div class="features ca-container" id="ca-container">
+  <div class="ca-wrapper", id="ca-wrapper">
+    <% ["iv", "villa", "hotel", "table", "realty", "shop"].each do |k| %>
+      <%= render :partial => "shared/circular_rotator_item", :locals => {
+        :id => k,
+        :title => t("pack.#{k}.title"),
+        :quote => t("pack.#{k}.quote"),
+        :desc => t("pack.#{k}.desc"),
+        :link => t("pack.#{k}.link"),
+        :detail_url => t("pack.#{k}.detail_url")
+      } %> 
+      
+      <% end %>
+  </div>
+</div>

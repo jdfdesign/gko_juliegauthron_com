@@ -1,0 +1,194 @@
+.projects {
+  padding: $line-height-computed 0;
+  position: relative;
+  .container {
+    max-width: 84%;
+    margin-right: 0;
+    margin-left: auto;
+    padding-left: 0;
+    padding-right: 20px;
+  }
+}
+
+
+.th-thumbnails {
+  @include clearfix;
+  > .mix {
+    display: none;
+  }
+  
+  > article {
+    //padding: $line-height-computed;
+  }
+}
+
+.thumbnail {
+  position: relative;
+  border: none;
+  margin-bottom: 0;
+  cursor: pointer;
+  //overflow: hidden;
+  .caption {
+    position: absolute;
+    top: 10%;
+    left: 5%;
+    right: 5%;
+  }
+  .border {
+    position: absolute;
+    background-color: $theme-color;
+    &.border-top,
+    &.border-bottom {
+      width: 0;
+      height: 6px;
+      @include transition(width 0.4s ease-in);
+    }
+    &.border-top {
+      top: 0;
+      left: 0;
+    }
+    &.border-bottom {
+      bottom: 0;
+      right: 0;
+    }
+    &.border-left,
+    &.border-right {
+      height: 0;
+      width: 6px;
+      @include transition(height 0.4s ease-in);
+    }
+    &.border-left {
+      top: 0;
+      left: 0;
+    }
+    &.border-right {
+      bottom: 0;
+      right: 0;
+    }
+  }
+  &.active,
+  &:hover {
+    .border-top,
+    .border-bottom {
+      width: 100%;
+    }
+    .border-left,
+    .border-right {
+      height: 100%;
+    }
+    .thumbnail-heading {
+      @include opacity(1);
+    }
+  }
+}
+.thumbnail-heading {
+  font-size: 38px;
+  text-transform: uppercase;
+  border-bottom: 6px solid $theme-color;
+  @include opacity(0);
+  @include transition(opacity 0.4s ease-in);
+}
+.thumbnail-img {
+  overflow: hidden;
+  text-align: center;
+  position: relative;
+  img {
+    @include opacity(.7);
+  }
+  &:hover {
+    border-color: $body-bg;
+    img {
+      @include opacity(14);
+    }
+  }
+}
+.thumbnail-vid {
+  overflow: hidden;
+  text-align: center;
+  position: relative;
+  iframe {
+    width: 100%;
+  }
+}
+
+/* PROJECT PAGE
+-------------------------------------------------- */
+
+#project-wrapper {
+  position: relative;
+  height: 100%;
+  padding-left: 15%;
+  padding-right: 15%;
+  @include center-block();
+}
+
+#border-wrapper {
+  position: absolute;
+  z-index: 2;
+  left: 12%;
+  right: 12%;
+  top: 12%;
+  bottom: 12%;
+  
+  .border {
+    position: absolute;
+    z-index: 2;
+    background-color: $theme-color;
+
+    &.border-top,
+    &.border-bottom {
+      left: 0;
+      right: 0;
+      height: 6px;
+      @include transition(width 0.4s ease-in);
+    }
+    &.border-top {
+      top: 0;
+    }
+    &.border-bottom {
+      bottom: 0;
+    }
+    &.border-left,
+    &.border-right {
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      @include transition(height 0.4s ease-in);
+    }
+    &.border-left {
+      left: 0;
+    }
+    &.border-right {
+      right: 0;
+    }
+  }
+}
+
+.project-control {
+  position: absolute;
+  top: 50%;
+  width: auto;
+  font-size: 12px;
+  color: #fff;
+  text-align: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  &.right {
+    right: 20px;
+    background-image: none;
+    @include reset-filter();
+  }
+  &.left {
+    left: 20px;
+    background-image: none;
+    @include reset-filter();
+  }
+  // Hover/focus state
+  &:hover,
+  &:focus {
+    outline: none;
+    color: $theme-color;
+    text-decoration: none;
+    @include opacity(.9);
+  }
+}

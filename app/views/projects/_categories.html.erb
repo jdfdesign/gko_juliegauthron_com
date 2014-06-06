@@ -1,0 +1,12 @@
+<% 
+  @portfolio ||= site.portfolio
+  @categories = @portfolio.categories.with_globalize.find_by_name("themes")
+%>
+
+<% if @categories.children.try(:any?) %>
+  <!-- Begin Categories -->
+  <ul id="categories-filter" class="nav nav-categories hidden-print th-mixitup-control">
+      <li class="filter active all" data-filter="all"><%= t(:"custom.view_all_themes") %><span class="border border-bottom"></span></li>
+      <%= render :partial => "projects/category", :collection => @categories.children, :as => :category %>
+    </ul>
+<% end %>

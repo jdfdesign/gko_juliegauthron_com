@@ -1,0 +1,21 @@
+<div id="<%= id %>" class="ca-item">
+  <div class="ca-item-main">
+    <div class="ca-icon"></div>
+    <h3><%= title.html_safe %></h3>
+    <h4><span class="ca-text"><%= quote.html_safe %></span></h4>
+    <a href="#" class="ca-more"><%= "Plus".html_safe %></a>
+  </div>
+  <div class="ca-content-wrapper">
+     <div class="ca-content">  
+       <h6><%= title.html_safe %></h6> 
+       <a href="#" class="ca-close"><%= "Fermer".html_safe %></a>
+       <div class="ca-content-text">
+         <p><%= desc.html_safe %></p>
+         <ul class="links">
+           <li><%= link_to(link, detail_url) %></li>
+           <li><%= link_to("Nous contacter...", contact_path) %></li>
+         </ul>
+       </div>
+     </div>
+   </div> 
+</div>
