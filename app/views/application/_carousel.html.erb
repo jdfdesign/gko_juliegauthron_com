@@ -13,13 +13,14 @@
         </div>
       <% end %>
     </div>
+    <% if images.count > 1 %>
     <!-- Carousel indicator --> 
     <ol class="carousel-indicators">
       <% images.each_with_index do |img, index| %>
         <li data-target="#project-carousel" data-slide-to="<%= index %>" class="<%= 'active' if index == 0 %>"><span class="round"></span></li>
       <% end %>
     </ol>
-
+    <% end %>
   </div>
   <a id="carousel-pause" class="animate-control animate-control-pause" href="#" data-slide="next"><i class="fa fa-pause"></i></a>
   <a id="carousel-play" class="animate-control animate-control-play" href="#" data-slide="next"><i class="fa fa-play"></i></a>

@@ -11,7 +11,7 @@
   </div> 
 </article>
 <%= link_to(@project.previous.public_url, :id => "previous-project", :class => "project-control left", :remote => true) do %>
-  <%= raw "<span class='hidden-xs'>Prev </span>&rarr;<span class='hidden-xs'><br>project</span>" %>
+  <%= raw "&larr;<span class='hidden-xs'> Prev</span><span class='hidden-xs'><br>project</span>" %>
 <% end if @project.previous %>
 <%= link_to(@project.next.public_url, :id => "next-project", :class => "project-control right", :remote => true) do %>
   <%= raw "<span class='hidden-xs'>Next </span>&rarr;<span class='hidden-xs'><br>project</span>" %>
