@@ -1,4 +1,6 @@
 .carousel {
+
+  
   .flex-video {
     position: relative;
     padding-top: 25px;
@@ -58,6 +60,7 @@
   text-align: center;
   line-height: 26px;
   overflow: hidden;
+  display: none;
 }
 .carousel-indicators {
   bottom: 10%;

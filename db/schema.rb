@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140517035757) do
+ActiveRecord::Schema.define(:version => 20140624100701) do
 
   create_table "assets", :force => true do |t|
     t.integer  "site_id"
@@ -219,6 +219,7 @@ ActiveRecord::Schema.define(:version => 20140517035757) do
     t.integer  "image_width"
     t.integer  "image_height"
     t.string   "image_uid"
+    t.string   "video_url"
   end
 
   create_table "inquiries", :force => true do |t|
@@ -450,6 +451,47 @@ ActiveRecord::Schema.define(:version => 20140517035757) do
 
   add_index "stickings", ["stickable_id", "stickable_type"], :name => "index_stickings_on_stickable_id_and_stickable_type"
   add_index "stickings", ["sticker_id"], :name => "index_stickings_on_sticker_id"
+
+  create_table "testimonial_translations", :force => true do |t|
+    t.integer  "testimonial_id"
+    t.string   "locale"
+    t.string   "title"
+    t.text     "body"
+    t.string   "meta_description"
+    t.string   "slug"
+    t.string   "meta_title"
+    t.string   "excerpt"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "testimonial_translations", ["locale"], :name => "index_testimonial_translations_on_locale"
+  add_index "testimonial_translations", ["testimonial_id"], :name => "index_testimonial_translations_on_testimonial_id"
+
+  create_table "testimonials", :force => true do |t|
+    t.integer  "section_id",       :null => false
+    t.integer  "site_id",          :null => false
+    t.text     "body"
+    t.string   "title"
+    t.string   "meta_title"
+    t.string   "meta_description"
+    t.string   "slug"
+    t.string   "name"
+    t.string   "excerpt"
+    t.string   "author"
+    t.string   "company"
+    t.string   "content_type"
+    t.integer  "width"
+    t.integer  "height"
+    t.integer  "size"
+    t.string   "source"
+    t.string   "source_filename"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "testimonials", ["section_id"], :name => "index_testimonials_on_section"
+  add_index "testimonials", ["site_id"], :name => "index_testimonials_on_site"
 
   create_table "text_element_translations", :force => true do |t|
     t.integer  "text_element_id"

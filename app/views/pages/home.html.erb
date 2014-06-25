@@ -1,38 +1,51 @@
 <%# cache ['home', site, I18n.locale] do %>
 <% 
   @portfolio ||= site.portfolio
-  @projects ||= @portfolio.projects
+  @projects = []
+  @portfolio.categories.each do |c| 
+    if categorization = c.categorizations.first
+      @projects << categorization.categorizable
+    end
+  end
   @project = @projects.first
 %>
 
 <div id="project-wrapper">
-  <span id="border-wrapper" class="hidden-xs">
+ <!--  <span id="border-wrapper" class="hidden-xs">
     <span class="border border-top"></span>
     <span class="border border-bottom"></span>
     <span class="border border-left"></span>
     <span class="border border-right"></span>
-  </span>
+  </span> -->
   <%= render "throbber" %>
   <div id="project-container">
     <%= render "projects/single_project" %>
   </div>
-
-  <!-- Carousel nav -->
-  <a id="prev-project" class="project-control left" href="#" data-slide="prev">&larr;<span class="hidden-xs"> Prev<br>project</span></a>
-  <a id="next-project" class="project-control right" href="#" data-slide="next"><span class="hidden-xs">Next </span>&rarr;<span class="hidden-xs"><br>project</span></a>
 </div>
 
   <% if @projects %>
   <div class="projects">
     <%= render "projects/categories" %>
-    <div class="container">
-      <div class="row">
-        <div class="th-thumbnails th-thumbnails-full-width">
-          <% @projects.each do |project| %>
-            <%= render "projects/project", :project => project %>
+    <div class="th-thumbnails th-thumbnails-full-width">
+      <% @portfolio.categories.each do |c|  %>
+      <% if categorization = c.categorizations.first %>
+        <% project = categorization.categorizable %>
+        <article class="col-xs-12 col-sm-6 col-md-4">
+          <%= link_to(c.public_url, :class => "thumbnail thumbnail-category", :data => { :remote => true }) do %>
+            <%= content_tag(:div, :class => "thumbnail-img") do %>
+              <%= image_tag(project.thumbnail.thumbnail(device_type == :desktop ? "450x325#" : "320x230#").url(), :alt => project.thumbnail.title, :class => "img-responsive" ) %>
+            <% end if project.thumbnail %>
+            <div class="caption">
+              <h3 class="thumbnail-heading"><%= c.title %> [<%= c.categorizations.count %>]</h3>
+            </div>
+            <span class="border border-top"></span>
+            <span class="border border-bottom"></span>
+            <span class="border border-left"></span>
+            <span class="border border-right"></span>
           <% end %>
-        </div>
-      </div>
+        </article>
+      <%  end %>
+      <% end %>
     </div>
   </div>
   <% end %>

@@ -1,12 +1,12 @@
-<article class="col-xs-12 col-sm-6 col-md-4 mix <%= project.categories.map {|c| c.title.parameterize }.join(" ") %>">
-  <%= link_to(project.public_url, :class => "thumbnail #{'active' if project.id == @project.id}", :data => { :remote => true }) do %>
-    <% if project.video && !project.video.address.blank? %>
+<article class="col-xs-12 col-sm-6 col-md-4">
+  <%= link_to(project.public_url, :class => "thumbnail thumbnail-project #{'active' if project.id == @project.id}", :data => { :remote => true }) do %>
+    <% if !project.thumbnail.video_url.blank? %>
       <div class="thumbnail-vid">
-        <iframe src="//player.vimeo.com/video/<%= project.video.address %>?title=0&amp;byline=0&amp;portrait=0&amp;autoplay=0&amp;loop=0" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        <iframe src="//player.vimeo.com/video/<%= project.thumbnail.video_url %>?title=0&amp;byline=0&amp;portrait=0&amp;autoplay=0&amp;loop=0" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
       </div>
     <% elsif project.thumbnail %>
       <%= content_tag(:div, :class => "thumbnail-img") do %>
-        <%= image_tag(project.thumbnail.thumbnail("450x325#").url(), :alt => project.thumbnail.title, :class => "img-responsive" ) %>
+        <%= image_tag(project.thumbnail.thumbnail(device_type == :desktop ? "450x325#" : "320x230#").url(), :alt => project.thumbnail.title, :class => "img-responsive" ) %>
       <% end %>
     <% end %>
     <div class="caption">

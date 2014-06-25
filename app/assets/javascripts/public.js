@@ -45,9 +45,7 @@ jQuery(function($){
         
         // start the carousel if there is more than one image else hide controls
         if (that.find('.item').length > 1) {
-          that.carousel({
-            interval: 3000
-          });
+
         } else {
           that.find('.carousel-control').each(function(index) {
             $(this).css({
@@ -169,117 +167,147 @@ jQuery(function($){
       //THEME.equalHeight();
     };
 
+    // ON RESIZE
+    // ==================================================
 
+    THEME.update = function(){
+      $(".thumbnail-project").on("ajax:beforeSend", function(evt, xhr, settings) {
+        console.log("remote");
+        if($(this).hasClass("active")) { return };
+        $('.thumbnail').removeClass("active");
+        $(this).addClass("active");
+        $("#project-container").hide();
+        $(".throbber_page").show();
+        $('body, html').animate({ scrollTop: "0" }, 1500, 'easeOutExpo' );
+      
+      })
+      .on("ajax:success", function(evt, xhr, settings) {
+        //console.log("Site.success xhr " + eval(xhr))
+        var that = $(this), 
+            url = that.attr('href');
+      
+        history.pushState(null, null, url);
+      
+        if (typeof(_gaq) != "undefined") {
+          _gaq.push(['_trackPageview', url]);  
+        } else {
+          console.log("_gaq disabled for _trackPageview" + url)
+        }
+
+        $("#project-container").html(eval(xhr));
+        THEME.placeholder();
+        THEME.carousel();
+        // Check image loaded to adjust thmbnails height
+        $('#project-carousel').imagesLoaded()
+        .always( function( instance ) {
+          $(".throbber_page").hide();
+        });
+      
+      
+        $("#project-container").show();
+      
+        try {
+          FB.XFBML.parse();
+        } catch (e) {
+          console.log("FB error");
+        }
+      })
+      .on("ajax:error", function(evt, xhr, status, error) {
+        var flash = $.parseJSON(xhr.getResponseHeader('X-Flash-Messages'));
+        console.log("Site.error " + flash.error);
+      });
+      
+
+      $('#prev-project').on("click", function(e) {
+        var $active = $('.thumbnail.active'),
+            $prev;
+        if (!$active.length) { return; }
+        $prev = $active.parent().prevAll(':visible').first();
+        if (!$prev.length) { 
+          $prev = $('.th-thumbnails article:visible').last();
+        }
+        $prev.find("a").trigger("click");
+        e.preventDefault();
+      });
+   
+      $('#next-project').on("click", function(e) {
+   
+        var $active = $('.thumbnail.active'),
+            $next;
+        if (!$active.length) { return; }
+        $next = $active.parent().nextAll(':visible').first();
+        if (!$next.length) { 
+          $next = $('.th-thumbnails article:visible').first();
+        }
+        $next.find("a").trigger("click");
+        e.preventDefault();
+      });
+      
+    };
+    
 /*==================================================
   	Init
 ==================================================*/
 
   $(document).ready(function() {
 
-    ///////////////////////////////////////////////////////
-    // Creates the filter menu for mobile version
-    $('.th-mixitup-control').addClass("hidden-xs").each(function() {
-      var select = $(document.createElement('select')).insertBefore($(this).parent()).addClass('visible-xs');;
-      $('> li', this).each(function() {
-        $(document.createElement('option')).appendTo(select).val(this.href).html($(this).html()).addClass($(this).attr('data-filter'));
-      });
-    });
-    
-    ///////////////////////////////////////////////////////
-    // Enable categories filter for select in mobile version
-    $('select').on('change', function() {
-      $('.th-thumbnails').mixItUp('filter', jQuery(this).find('option:selected').attr('class'));
-    });
-    
-    $('.th-thumbnails').mixItUp({
-      layout: {
-        display: 'block'
-      },
-    	callbacks: {
-    		onMixEnd: function(state){
-    			console.log(state)
-    		}	
-    	}
-    });
-    
-   $('#prev-project').on("click", function(e) {
-     var $active = $('.thumbnail.active'),
-         $prev;
-     if (!$active.length) { return; }
-     $prev = $active.parent().prevAll(':visible').first();
-     if (!$prev.length) { 
-       $prev = $('.th-thumbnails article:visible').last();
+   
+   $(".thumbnail-category").on("click", function(e) {
+     $("#theme-categories-link .btn-label").html($(this).find(".thumbnail-heading").html())
+   })
+   
+   $("#medium-categories-dropdown-menu a").on("click", function(e) {
+     $("#medium-categories-link .btn-label").html($(this).find(".link-label").html());
+     $("#theme-categories-link").removeClass("active");
+     $("#medium-categories-link").addClass("active");
+   })
+   
+   $("#theme-categories-dropdown-menu a").on("click", function(e) {
+     $("#theme-categories-link .btn-label").html($(this).find(".link-label").html());
+     $("#medium-categories-link").removeClass("active");
+     $("#theme-categories-link").addClass("active");
+   })
+   
+   $(".thumbnail-category, .dropdown-menu-categories a").on("ajax:beforeSend", function(evt, xhr, settings) {
+     console.log("remote category");
+     if($(this).hasClass("active")) { return };
+     $('.thumbnail-category').removeClass("active");
+     $(this).addClass("active");
+     $(".th-thumbnails").hide();
+     $(".throbber_page").show();
+     
+     //$('body, html').animate({ scrollTop: "0" }, 1500, 'easeOutExpo' );
+     
+   })
+   .on("ajax:success", function(evt, xhr, settings) {
+     //console.log("Site.success xhr " + eval(xhr))
+     var that = $(this), 
+         url = that.attr('href');
+
+     $(".th-thumbnails").html(eval(xhr));
+     $(".throbber_page").hide();
+     THEME.update();
+     $(".th-thumbnails").show();
+     
+     history.pushState(null, null, url);
+     
+     if (typeof(_gaq) != "undefined") {
+       _gaq.push(['_trackPageview', url]);  
+     } else {
+       console.log("_gaq disabled for _trackPageview" + url)
      }
-     $prev.find("a").trigger("click");
-     e.preventDefault();
-   });
-   
-   $('#next-project').on("click", function(e) {
-   
-     var $active = $('.thumbnail.active'),
-         $next;
-     if (!$active.length) { return; }
-     $next = $active.parent().nextAll(':visible').first();
-     if (!$next.length) { 
-       $next = $('.th-thumbnails article:visible').first();
+
+     try {
+       FB.XFBML.parse();
+     } catch (e) {
+       console.log("FB error");
      }
-     $next.find("a").trigger("click");
-     e.preventDefault();
+   })
+   .on("ajax:error", function(evt, xhr, status, error) {
+     var flash = $.parseJSON(xhr.getResponseHeader('X-Flash-Messages'));
+     console.log("Site.error " + flash.error);
    });
-   
-   ///////////////////////////////////////////////////////////////
-   // Project Ajax
-   
-    $(".thumbnail").on("ajax:beforeSend", function(evt, xhr, settings) {
-      console.log("remote");
-      if($(this).hasClass("active")) { return };
-      $('.thumbnail').removeClass("active");
-      $(this).addClass("active");
-      $("#project-container").hide();
-      $(".throbber_page").show();
-      $('body, html').animate({ scrollTop: "0" }, 1500, 'easeOutExpo' );
-      
-    })
-    .on("ajax:success", function(evt, xhr, settings) {
-      //console.log("Site.success xhr " + eval(xhr))
-      var that = $(this), 
-          url = that.attr('href');
-      
-      history.pushState(null, null, url);
-      
-      if (typeof(_gaq) != "undefined") {
-        _gaq.push(['_trackPageview', url]);  
-      } else {
-        console.log("_gaq disabled for _trackPageview" + url)
-      }
 
-      $("#project-container").html(eval(xhr));
-      THEME.placeholder();
-      THEME.carousel();
-      // Check image loaded to adjust thmbnails height
-      $('#project-carousel').imagesLoaded()
-      .always( function( instance ) {
-        $(".throbber_page").hide();
-      });
-      
-      
-      $("#project-container").show();
-      
-      try {
-        FB.XFBML.parse();
-      } catch (e) {
-        console.log("FB error");
-      }
-    })
-    .on("ajax:error", function(evt, xhr, status, error) {
-      var flash = $.parseJSON(xhr.getResponseHeader('X-Flash-Messages'));
-      console.log("Site.error " + flash.error);
-    });
-
-    
-
-    
-    
   	$('.testimonial-title > span').each(function(){
   		var $object = $('> span', this);
   		var delay = Math.floor((Math.random()*450)) + ($(this).index() * 150); 

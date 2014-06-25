@@ -89,9 +89,9 @@ $padding-small-horizontal:       10px;
 $line-height-large:              1.33;
 $line-height-small:              1.5;
 
-$border-radius-base:             4px;
-$border-radius-large:            6px;
-$border-radius-small:            3px;
+$border-radius-base:             0;//4px;
+$border-radius-large:            0;//6px;
+$border-radius-small:            0;//3px;
 
 $component-active-color:         #fff;
 $component-active-bg:            $brand-primary;
@@ -172,9 +172,9 @@ $input-group-addon-border-color: $input-border;
 // Dropdowns
 // -------------------------
 
-$dropdown-bg:                    #fff;
-$dropdown-border:                rgba(0,0,0,.15);
-$dropdown-fallback-border:       #ccc;
+$dropdown-bg:                    $body-bg;//#fff;
+$dropdown-border:                $brand-primary;//rgba(0,0,0,.15);
+$dropdown-fallback-border:       $brand-primary;//#ccc;
 $dropdown-divider-bg:            #e5e5e5;
 
 $dropdown-link-color:            $gray-dark;

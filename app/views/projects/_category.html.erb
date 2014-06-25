@@ -1,4 +1,5 @@
-<%= content_tag_for(:li, category, :class => "filter", :data => { :filter => ".#{category.title.parameterize}" }) do %>
-  <%= category.title %>
-  <span class="border border-bottom"></span>
+<%= content_tag_for(:li, category) do %>
+  <%= link_to(category.public_url, :remote => true) do %>
+    <%= raw("<span class='link-label'>#{category.title}</span><span class='pull-right'>[#{category.categorizations.count}]</span>") %>
+  <% end %>
 <% end %>

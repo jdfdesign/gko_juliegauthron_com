@@ -9,6 +9,7 @@ $theme-color: #1201ff;
 @import "theme/form";
 @import "theme/carousel";
 @import "theme/portfolio";
+@import "theme/press";
 
 /* FIX FOR IE DEVICE_WIDTH BUG
 -------------------------------------------------- */
@@ -49,17 +50,10 @@ body {
   }
 }
 
-.thumbnails-full-width {
-  max-width: none;
-  [class^="col-xs-"],
-  [class*=" col-xs-"],
-  [class^="col-sm-"],
-  [class*=" col-sm-"],
-  [class^="col-md-"],
-  [class*=" col-md-"],
-  [class^="col-lg-"],
-  [class*=" col-lg-"] {
-    margin: 0;
+.th-thumbnails-full-width {
+  [class^="col-*"],
+  [class*=" col-*"] {
+    margin: 0 0 20px;
     padding: 8px;
   }
 }
@@ -95,85 +89,93 @@ a, button {
   .flex-video { padding-top: 0; }
 }
 
-/* PROJECTS
--------------------------------------------------- */
 
-#categories-filter {
-  position: absolute;
-  z-index: $zindex-navbar;
-  top: $line-height-computed;
-  left: 0;
-  width: 240px;
-}
-
-#categories-filter.fixed {
-  position: fixed;
-  z-index: $zindex-navbar;
-  top: $navbar-height + $line-height-computed;
-
-  //background-color: #fff;
-}
-.nav-categories {
-  margin-bottom: 0;
-  padding-left: 0; // Override default ul/ol
-  list-style: none;
-  @include clearfix();
-
-  > li {
-    margin-left: 8px;
-    position: relative;
-    display: block;
-    text-transform: uppercase;
-    padding-bottom: 4px;
-    padding-top: 4px;
-    cursor: pointer;
-    color: $theme-color;
-    @include transition(margin-left 0.3s ease-in-out);
-    .border {
-      position: absolute;
-      background-color: $theme-color;
-      &.border-bottom {
-        width: 0;
-        height: 6px;
-        bottom: 0;
-        left: 0;
-        @include transition(width 0.3s ease-in-out);
-      }
-    }
-    &.all {
-      font-size: 34px;
-    }
-    &.active,
-    &:hover {
-      margin-left: 40px;
-      .border-bottom {
-        width: 100%;
-      }
-    }
-  }
-}
-
-/* SINGLE PROJECT
--------------------------------------------------- */
-.share-project {
-  @media (min-width: $grid-float-breakpoint) {
-    position: absolute;
-    z-index: 3;
-    top: 6%;
-    left: 15%;
-  }
-}
 .page-header {
+  @include clearfix;
+  margin: 0;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  border-bottom: 0;
+  background-color: #dadbd8;
+background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc3JyBoZWlnaHQ9JzE0JyB2aWV3Qm94PScwIDAgNSAxMCc+Cgk8cmVjdCB3aWR0aD0nMTEwJScgeD0nLTUlJyB5PSctNSUnIGhlaWdodD0nMTEwJScgZmlsbD0nI2RhZGJkOCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nMScgeDI9JzcnIHkyPScxMCcgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nNicgeDI9JzcnIHkyPScxNScgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nLTQnIHgyPSc3JyB5Mj0nNScgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgo8L3N2Zz4=');
+  
+}
+.page-title {
   border-bottom: 6px solid $theme-color;
   text-transform: uppercase;
-  @media (min-width: $grid-float-breakpoint) {
-    position: absolute;
-    z-index: 3;
-    top: 15%;
-    right: 10px;
-    max-width: 300px;
+  text-align: right;
+  max-width: 500px;
+  float: right;
+  padding-right: 20px;
+  margin: 0;
+}
+/* PROJECTS
+-------------------------------------------------- */
+.categories {
+  border-bottom: 6px solid $brand-primary;
+  margin-bottom: 40px;
+}
+.btn-group-categories {
+  
+}
+.dropdown-menu-categories {
+  min-width: 280px;
+  text-align: left !important;
+}
+
+.btn-categories {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 0;
+  text-align: left;
+  padding-left: 20px;
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 45px;
+  line-height: 45px;
+  @include transition(all 0.3s ease-in-out);
+  
+  color: $brand-primary;
+  background-color: transparent;
+  
+  &:hover,
+  &:focus,
+  &:active,
+  &.active {
+    color: $body-bg;
+    background-color: $brand-primary;
+    text-decoration: none;
+  }
+  .open & { &.dropdown-toggle {
+    color: $body-bg;
+    background-color: $brand-primary;
+  } }
+  &:active,
+  &.active {
+    background-image: none;
+  }
+  .open & { &.dropdown-toggle {
+    background-image: none;
+  } }
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    &,
+    &:hover,
+    &:focus,
+    &:active,
+    &.active {
+      background-color: $brand-primary;
+          border-color: $brand-primary;
+    }
+  }
+
+  .badge {
+    color: $body-bg;
+    background-color: $body-bg;
   }
 }
+
 
 /* TESTIMONIALS
 -------------------------------------------------- */

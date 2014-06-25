@@ -1,0 +1,19 @@
+<%# collection_cache(parent) do %>
+<div class="page-header">
+  <%= render_page_title(parent.title) %>
+  <%= content_tag :p, :class => "lead" do %>
+    <% raw parent.body %>
+  <% end if parent.body.present? %>
+</div>
+<div class="container">
+  <div class="row">
+  <% collection.each do |item| %>                           
+    <article class="col-sm-12 testimonial">
+      <h2 class="post-title"><i class="fa fa-quote-left"></i> <%= item.title %></h2>
+      <div class="copy-text"><%= item.excerpt.html_safe %></div>
+      <div class="meta"><%= item.author %></div>
+    </article>
+  <% end %>
+  </div> 
+</div>
+<%# end %>
