@@ -9,7 +9,7 @@
   <div class="row">
   <% collection.each do |item| %>                           
     <article class="col-sm-12 testimonial">
-      <h2 class="post-title"><i class="fa fa-quote-left"></i> <%= item.title %></h2>
+      <h2 class="post-title"><i class="fa fa-quote-left"></i> <%= link_to(item.title, item.public_url) %></h2>
       <div class="copy-text"><%= item.excerpt.html_safe %></div>
       <div class="meta"><%= item.author %></div>
     </article>

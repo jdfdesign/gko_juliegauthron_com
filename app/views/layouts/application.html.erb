@@ -2,9 +2,7 @@
 <html class="no-js">
 <%= render 'head' %>
 <body class="home">
-  
   <div id="page-wrapper">
-    <%= yield :header if content_for?(:header) %>
     <%= render 'navbar' %>
     <%= yield %>
     <%= render 'footer' %>
