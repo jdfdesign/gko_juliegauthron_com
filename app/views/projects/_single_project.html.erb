@@ -1,19 +1,23 @@
-<%# @project_cache(@project) do %>
-<article class='project'>
-  <%= render "carousel", :images => @project.images %>
-  <div class="project-header">
-    <h1 class="project-title"><%= @project.title %></h1>
-    <%= render_copy_text(@project.body) %>
-  </div>
-  <div class="share-project">
-    <span class="share"><%= raw("#{t(:"custom.share")}:&nbsp;") %></span>
-    <span class="socials"><a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'facebook-share-dialog','width=626,height=436');return false;">Facebook</a>, <a href="https://twitter.com/share" data-lang="en" target="_blank">Twitter</a></span>
-  </div> 
-</article>
-<%= link_to(@project.previous.public_url, :id => "previous-project", :class => "project-control left", :remote => true) do %>
-  <%= raw "&larr;<span class='hidden-xs'> Prev</span><span class='hidden-xs'><br>project</span>" %>
-<% end if @project.previous %>
-<%= link_to(@project.next.public_url, :id => "next-project", :class => "project-control right", :remote => true) do %>
-  <%= raw "<span class='hidden-xs'>Next </span>&rarr;<span class='hidden-xs'><br>project</span>" %>
-<% end if @project.next %>
-<%# end %>
+<% resource_cache(@project) do %>
+  <article class='project'>
+    <%= render "carousel", :images => @project.images %>
+    <div class="project-header">
+      <h1 class="project-title"><%= @project.title %></h1>
+      <%= render_copy_text(@project.categories.first.body) if @project.categories.first %>
+    </div>
+    <div class="share-project">
+      <span class="share"><%= raw("#{t(:"custom.share")}:&nbsp;") %></span>
+      <span class="socials"><a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'facebook-share-dialog','width=626,height=436');return false;">Facebook</a>, <a href="https://twitter.com/share" data-lang="en" target="_blank">Twitter</a></span>
+    </div> 
+  </article>
+  <% if @project.previous %>
+    <%= link_to(@project.previous.public_url, :id => "previous-project", :class => "project-control left") do %>
+      <%= raw "&larr;<span class='hidden-xs'> Prev</span><span class='hidden-xs'><br>project</span>" %>
+    <% end %>
+  <% end %>
+  <% if @project.next %>
+    <%= link_to(@project.next.public_url, :id => "next-project", :class => "project-control right") do %>
+      <%= raw "<span class='hidden-xs'>Next </span>&rarr;<span class='hidden-xs'><br>project</span>" %>
+    <% end %>
+   <% end %>
+<% end %>

@@ -3,7 +3,7 @@
   @theme_categories = @portfolio.categories.with_globalize.find_by_name("themes")
   @medium_categories = @portfolio.categories.with_globalize.find_by_name("mediums")
 %>
-<div class="categories clearfix">
+<div class="categories">
   <% if @theme_categories.children.try(:any?) %>
   <div class="btn-group btn-group-categories pull-left">
     <a id="theme-categories-link" class="btn btn-link btn-lg dropdown-toggle btn-categories" data-toggle="dropdown">

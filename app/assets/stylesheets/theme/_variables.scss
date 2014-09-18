@@ -281,9 +281,9 @@ $navbar-default-brand-hover-color:         #fff;//darken($navbar-default-brand-c
 $navbar-default-brand-hover-bg:            $body-bg;//transparent;
 
 // Navbar toggle
-$navbar-default-toggle-hover-bg:           darken($navbar-default-bg, 10%);//#ddd;
-$navbar-default-toggle-icon-bar-bg:        #fff;//#ccc;
-$navbar-default-toggle-border-color:       #fff;//#ddd;
+$navbar-default-toggle-hover-bg:           $brand-primary;//darken($navbar-default-bg, 10%);//#ddd;
+$navbar-default-toggle-icon-bar-bg:        $brand-primary;//#fff;//#ccc;
+$navbar-default-toggle-border-color:       $brand-primary;//#fff;//#ddd;
 
 
 // Inverted navbar
@@ -581,8 +581,8 @@ $carousel-control-width:                      auto;//15%;
 $carousel-control-opacity:                    1;//.5;
 $carousel-control-font-size:                  12px;//20px;
 
-$carousel-indicator-active-bg:                #fff;
-$carousel-indicator-border-color:             #fff;
+$carousel-indicator-active-bg:                $theme-color;//#fff;
+$carousel-indicator-border-color:             $theme-color;//#fff;
 
 $carousel-caption-color:                      #fff;
 

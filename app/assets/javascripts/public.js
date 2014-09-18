@@ -3,6 +3,7 @@
 //= require jquery.easing
 //= require jquery.mixitup
 //= require jquery.imagesloaded
+//= require bootstrap-hover-dropdown.js
 
 // make console.log safe to use
 window.console || (console = {
@@ -75,174 +76,30 @@ jQuery(function($){
 
     };
 
-    // SCROLLING ACTIONS
-    // ==================================================
-
-    THEME.scrolling = function(){
-    	var didScroll = false,
-          docElem = document.documentElement,
-          //$navbar = $('#main-menu'),
-          $arrow = $('#go-up-arrow'),
-          $projects = $(".projects"),
-          $categories = $("#categories-filter"),
-          offset = 0;
-
-
-    	$arrow.click(function(e) {
-    		$('body, html').animate({ scrollTop: "0" }, 1500, 'easeOutExpo' );
-    		e.preventDefault();
-    	});
-
-    	$(window).scroll(function() {
-    		didScroll = true;
-    	});
-
-    	setInterval(function() {
-    		if( didScroll ) {
-    			didScroll = false;
-          offset = window.pageYOffset || docElem.scrollTop;
-
-    			if( offset > 1000 ) {
-    				$arrow.css('display', 'block');
-    			} else {
-    				$arrow.css('display', 'none');
-    			}
-          
-          $projects.css("min-height", $categories.outerHeight());
-          
-          if ( offset >= $projects.offset().top ) {
-            $categories.addClass("fixed");
-          }
-          else {
-            $categories.removeClass("fixed");
-          }
-    		}
-    	}, 250);
-    };
-    
-  /* ==================================================
-    	Navigation
-    ================================================== */
-    THEME.navigation = function() {
-      
-      var navbarHeight = $('.navbar').height();
-      $(window).bind('scroll', function () {
-        var scrollTop = jQuery(window).scrollTop();
-        scrollTop >= $(window).height() - navbarHeight ? $(".navbar").addClass("fixed") : $(".navbar").removeClass("fixed");
-      });
-      
-      $('.navbar-nav li').on("click", function(e) {
-        var target = $("#" + $(this).attr('id') + "_page"),
-            navbarHeight = $('.navbar').height();
-        console.log(target);
-        $(this).parent().find('li').removeClass('active');
-        $(this).addClass('active');
-
-        if ($(window).width() <= 767) {
-          $('html, body').stop().animate({
-            scrollTop: target.offset().top - navbarHeight
-          }, 1500, 'easeInOutExpo');
-        } else {
-          $('html, body').stop().animate({
-            scrollTop: target.offset().top - navbarHeight
-          }, 1500, 'easeInOutExpo');
-        }
-
-        e.preventDefault();
-      })
-      
-      
-    }
-    
     // ON RESIZE
     // ==================================================
 
     THEME.resizing = function(){
       var navbarHeight = $(".navbar").height(),
           theHeight = $(window).outerHeight() - navbarHeight;
-      //$('#wrapper').css({'margin-top': navbarHeight});
-      $('#project-wrapper').css({'height': theHeight});
-      //$('#project-carousel').css({'height': theHeight});
-
-      //THEME.equalHeight();
+      if($(window).width() > 768) {
+        $('#project-wrapper').css({'height': theHeight});
+      } else {
+        $('#project-wrapper').css({'height': 'auto'});
+      }
     };
 
     // ON RESIZE
     // ==================================================
 
     THEME.update = function(){
-      $(".thumbnail-project").on("ajax:beforeSend", function(evt, xhr, settings) {
-        console.log("remote");
-        if($(this).hasClass("active")) { return };
-        $('.thumbnail').removeClass("active");
-        $(this).addClass("active");
-        $("#project-container").hide();
-        $(".throbber_page").show();
-        $('body, html').animate({ scrollTop: "0" }, 1500, 'easeOutExpo' );
-      
-      })
-      .on("ajax:success", function(evt, xhr, settings) {
-        //console.log("Site.success xhr " + eval(xhr))
-        var that = $(this), 
-            url = that.attr('href');
-      
-        history.pushState(null, null, url);
-      
-        if (typeof(_gaq) != "undefined") {
-          _gaq.push(['_trackPageview', url]);  
-        } else {
-          console.log("_gaq disabled for _trackPageview" + url)
+      $('#previous-project, #next-project').on("click", function(e) {
+        var myElement = $("a.thumbnail[href='" + $(this).attr("href") + "']");
+        if(myElement.length) {
+          myElement.trigger("click");
         }
-
-        $("#project-container").html(eval(xhr));
-        THEME.placeholder();
-        THEME.carousel();
-        // Check image loaded to adjust thmbnails height
-        $('#project-carousel').imagesLoaded()
-        .always( function( instance ) {
-          $(".throbber_page").hide();
-        });
-      
-      
-        $("#project-container").show();
-      
-        try {
-          FB.XFBML.parse();
-        } catch (e) {
-          console.log("FB error");
-        }
-      })
-      .on("ajax:error", function(evt, xhr, status, error) {
-        var flash = $.parseJSON(xhr.getResponseHeader('X-Flash-Messages'));
-        console.log("Site.error " + flash.error);
-      });
-      
-
-      $('#prev-project').on("click", function(e) {
-        var $active = $('.thumbnail.active'),
-            $prev;
-        if (!$active.length) { return; }
-        $prev = $active.parent().prevAll(':visible').first();
-        if (!$prev.length) { 
-          $prev = $('.th-thumbnails article:visible').last();
-        }
-        $prev.find("a").trigger("click");
         e.preventDefault();
       });
-   
-      $('#next-project').on("click", function(e) {
-   
-        var $active = $('.thumbnail.active'),
-            $next;
-        if (!$active.length) { return; }
-        $next = $active.parent().nextAll(':visible').first();
-        if (!$next.length) { 
-          $next = $('.th-thumbnails article:visible').first();
-        }
-        $next.find("a").trigger("click");
-        e.preventDefault();
-      });
-      
     };
     
 /*==================================================
@@ -250,64 +107,74 @@ jQuery(function($){
 ==================================================*/
 
   $(document).ready(function() {
+    
+    var isHome = true;
+    var $projects = $(".projects");
+    var state;
+    
+    // Enable categories filter
+    $projects.mixItUp({
+      targetDisplayGrid: 'block', // required to fix bug in Chrome with images height
+      callbacks: {
+      		onMixEnd: function(state){
+      			console.log("onMixEnd: " + state.activeFilter);
+            
+      		}	
+      	}
+    });
+    
+    // Disable filter links otherwise it reloaded the page.
+    $('.filter').on('click', function(e) {
+      $("#themes-dropdown > span:first").html($(this).html())
+      e.preventDefault();
+    })
 
-   
-   $(".thumbnail-category").on("click", function(e) {
-     $("#theme-categories-link .btn-label").html($(this).find(".thumbnail-heading").html())
-   })
-   
-   $("#medium-categories-dropdown-menu a").on("click", function(e) {
-     $("#medium-categories-link .btn-label").html($(this).find(".link-label").html());
-     $("#theme-categories-link").removeClass("active");
-     $("#medium-categories-link").addClass("active");
-   })
-   
-   $("#theme-categories-dropdown-menu a").on("click", function(e) {
-     $("#theme-categories-link .btn-label").html($(this).find(".link-label").html());
-     $("#medium-categories-link").removeClass("active");
-     $("#theme-categories-link").addClass("active");
-   })
-   
-   $(".thumbnail-category, .dropdown-menu-categories a").on("ajax:beforeSend", function(evt, xhr, settings) {
-     console.log("remote category");
-     if($(this).hasClass("active")) { return };
-     $('.thumbnail-category').removeClass("active");
-     $(this).addClass("active");
-     $(".th-thumbnails").hide();
-     $(".throbber_page").show();
-     
-     //$('body, html').animate({ scrollTop: "0" }, 1500, 'easeOutExpo' );
-     
-   })
-   .on("ajax:success", function(evt, xhr, settings) {
-     //console.log("Site.success xhr " + eval(xhr))
-     var that = $(this), 
-         url = that.attr('href');
+    THEME.update();
+    
+    $(".thumbnail").on("ajax:beforeSend", function(evt, xhr, settings) {
+      if($(this).hasClass("active")) { return };
+      $('.thumbnail').removeClass("active");
+      $(this).addClass("active");
+      $("#project-container").hide();
+      $(".throbber_page").show();
+      $('body, html').animate({ scrollTop: "0" }, 1500, 'easeOutExpo' );
+    })
+    .on("ajax:success", function(evt, xhr, settings) {
+      var that = $(this), 
+          url = that.attr('href');
+    
+      history.pushState(null, null, url);
+    
+      if (typeof(_gaq) != "undefined") {
+        _gaq.push(['_trackPageview', url]);  
+      } else {
+        console.log("_gaq disabled for _trackPageview" + url)
+      }
 
-     $(".th-thumbnails").html(eval(xhr));
-     $(".throbber_page").hide();
-     THEME.update();
-     $(".th-thumbnails").show();
-     
-     history.pushState(null, null, url);
-     
-     if (typeof(_gaq) != "undefined") {
-       _gaq.push(['_trackPageview', url]);  
-     } else {
-       console.log("_gaq disabled for _trackPageview" + url)
-     }
+      $("#project-container").html(eval(xhr));
+      THEME.update();
+      THEME.placeholder();
+      THEME.carousel();
+      // Check image loaded to adjust thmbnails height
+      $('#project-carousel').imagesLoaded()
+      .always( function( instance ) {
+        $(".throbber_page").hide();
+      });
+    
+      $("#project-container").show();
+      
+      try {
+        FB.XFBML.parse();
+      } catch (e) {
+        console.log("FB error");
+      }
+    })
+    .on("ajax:error", function(evt, xhr, status, error) {
+      var flash = $.parseJSON(xhr.getResponseHeader('X-Flash-Messages'));
+      console.log("Site.error " + flash.error);
+    });
 
-     try {
-       FB.XFBML.parse();
-     } catch (e) {
-       console.log("FB error");
-     }
-   })
-   .on("ajax:error", function(evt, xhr, status, error) {
-     var flash = $.parseJSON(xhr.getResponseHeader('X-Flash-Messages'));
-     console.log("Site.error " + flash.error);
-   });
-
+      
   	$('.testimonial-title > span').each(function(){
   		var $object = $('> span', this);
   		var delay = Math.floor((Math.random()*450)) + ($(this).index() * 150); 
@@ -318,7 +185,6 @@ jQuery(function($){
   	});
     
     THEME.fix();
-    THEME.scrolling();
     THEME.placeholder();
     THEME.carousel();
 
