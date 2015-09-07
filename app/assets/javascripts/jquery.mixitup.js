@@ -473,6 +473,7 @@
 		 */
 		
 		_processClick: function($button, type){
+      
 			var self = this,
 				trackClick = function($button, type, off){
 					var proto = $.MixItUp.prototype;

@@ -14,60 +14,18 @@
     left: 5%;
     right: 5%;
   }
-  .border {
-    position: absolute;
-    background-color: $theme-color;
-    &.border-top,
-    &.border-bottom {
-      width: 0;
-      height: 6px;
-      @include transition(width 0.4s ease-in);
-    }
-    &.border-top {
-      top: 0;
-      left: 0;
-    }
-    &.border-bottom {
-      bottom: 0;
-      right: 0;
-    }
-    &.border-left,
-    &.border-right {
-      height: 0;
-      width: 6px;
-      @include transition(height 0.4s ease-in);
-    }
-    &.border-left {
-      top: 0;
-      left: 0;
-    }
-    &.border-right {
-      bottom: 0;
-      right: 0;
-    }
-  }
-  &.active,
-  &:hover {
-    .border-top,
-    .border-bottom {
-      width: 100%;
-    }
-    .border-left,
-    .border-right {
-      height: 100%;
-    }
-    .thumbnail-img {
-      border-color: $body-bg;
-      img {
-        @include opacity(1);
-      }
-    }
-  }
 }
 .thumbnail-heading {
-  font-size: 38px;
+  font-size: 16px;
   text-transform: uppercase;
   border-bottom: 6px solid $theme-color;
+  @media (max-width: $screen-xs-max) {
+    @include text-overflow();
+  }
+  
+  @media (min-width: $grid-float-breakpoint) {
+    font-size: 38px;
+  }
 }
 .thumbnail-img {
   overflow: hidden;
@@ -85,19 +43,57 @@
     width: 100%;
   }
 }
-
-
 .no-touch {
-
   .thumbnail {
     .thumbnail-heading {
       @include opacity(0);
-      @include transition(opacity 0.4s ease-in);
+      @include transition(opacity 300ms ease-in);
     }
+    .border {
+      position: absolute;
+      background-color: $theme-color;
+      &.border-top,
+      &.border-bottom {
+        width: 0;
+        height: 6px;
+        @include transition(width 300ms ease-in);
+      }
+      &.border-top {
+        top: 0;
+        left: 0;
+      }
+      &.border-bottom {
+        bottom: 0;
+        right: 0;
+      }
+      &.border-left,
+      &.border-right {
+        height: 0;
+        width: 6px;
+        @include transition(height 300ms ease-in);
+      }
+      &.border-left {
+        top: 0;
+        left: 0;
+      }
+      &.border-right {
+        bottom: 0;
+        right: 0;
+      }
+    }
+    
     &.active,
     &:hover {
       .thumbnail-heading {
         @include opacity(1);
+      }
+      .border-top,
+      .border-bottom {
+        width: 100%;
+      }
+      .border-left,
+      .border-right {
+        height: 100%;
       }
     }
   }
@@ -106,36 +102,49 @@
 -------------------------------------------------- */
 
 #project-wrapper {
-  position: relative;
+  position: fixed;
+  z-index: -1;
+  width: 100%;
+  overflow: hidden;
+  top: 0;
+  left: 0;
   margin-top: $navbar-height;
   padding-left: 0;
   padding-right: 0;
-  background-color: #dadbd8;
-background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc3JyBoZWlnaHQ9JzE0JyB2aWV3Qm94PScwIDAgNSAxMCc+Cgk8cmVjdCB3aWR0aD0nMTEwJScgeD0nLTUlJyB5PSctNSUnIGhlaWdodD0nMTEwJScgZmlsbD0nI2RhZGJkOCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nMScgeDI9JzcnIHkyPScxMCcgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nNicgeDI9JzcnIHkyPScxNScgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nLTQnIHgyPSc3JyB5Mj0nNScgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgo8L3N2Zz4=');
-  border-bottom: 6px solid $theme-color;
-  .share-project {
-    @media (min-width: $grid-float-breakpoint) {
-      position: absolute;
-      z-index: 3;
-      top: 6%;
-      left: 15%;
-    }
+  background-color: $body-bg;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc3JyBoZWlnaHQ9JzE0JyB2aWV3Qm94PScwIDAgNSAxMCc+Cgk8cmVjdCB3aWR0aD0nMTEwJScgeD0nLTUlJyB5PSctNSUnIGhlaWdodD0nMTEwJScgZmlsbD0nI2RhZGJkOCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nMScgeDI9JzcnIHkyPScxMCcgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nNicgeDI9JzcnIHkyPScxNScgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nLTQnIHgyPSc3JyB5Mj0nNScgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgo8L3N2Zz4=');
+  @media (min-width: $grid-float-breakpoint) {
+    margin-top: $navbar-height-breakpoint;
   }
-  .project-header {
-    border-bottom: 0;
-    color: $brand-primary;
-    @media (min-width: $grid-float-breakpoint) {
-      position: absolute;
-      z-index: 3;
-      top: 15%;
-      right: 10px;
-      max-width: 300px;
-    }
-    .project-title {
-      border-bottom: 6px solid $theme-color;
-      text-transform: uppercase;
-    }
+}
+
+.project-header {
+  border-bottom: 0;
+  color: $brand-primary;
   @include center-block();
+  @media (min-width: $grid-float-breakpoint) {
+    position: absolute;
+    z-index: 3;
+    top: 15%;
+    right: 10px;
+    max-width: 300px;
+  }
+}
+
+.project-title {
+  text-transform: uppercase;
+  @media (min-width: $grid-float-breakpoint) {
+    border-bottom: 6px solid $theme-color;
+    max-width: 500px;
+  }
+}
+
+.share-project {
+  @media (min-width: $grid-float-breakpoint) {
+    position: absolute;
+    z-index: 3;
+    top: 6%;
+    right: 15%;
   }
 }
 
@@ -146,42 +155,41 @@ background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53
 }
 
 .project-control {
-  position: absolute;
-  z-index: 1;
-  top: 50%;
-  width: auto;
   font-size: 12px;
-  color: #fff;
+  color: $brand-primary;
   text-align: center;
   font-weight: 700;
   text-transform: uppercase;
-  background-color: $brand-primary;
+  span {
+    color: #fff;
+    background-color: $brand-primary;
+  }
+  
   padding: 8px;
   &.right {
-    right: 20px;
     background-image: none;
     @include reset-filter();
+    float: right;
   }
   &.left {
-    left: 20px;
     background-image: none;
     @include reset-filter();
+    float: left;
   }
-  // Hover/focus state
   &:hover,
   &:focus {
     outline: none;
-    color: #fff;
     text-decoration: none;
-    @include opacity(.9);
   }
   
   @media (min-width: $screen-sm-min) {
-    background-color: transparent;
     padding: 0;
     &:hover,
     &:focus {
-      color: $brand-primary;
+      span {
+        color: $brand-primary;
+        background-color: $body-bg;
+      }
     }
   }
 }

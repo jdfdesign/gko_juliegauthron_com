@@ -2,21 +2,59 @@
 -------------------------------------------------- */
 .navbar {
   border: 0;
+  
   .nav > li > a {
     text-transform: uppercase;
     font-weight: 700;
     letter-spacing: 1px;
     border-bottom: 4px solid transparent;
-    //font-size: 11px;
     @include transition(border-bottom 0.3s ease-in-out);
     &:hover {
       border-color: $theme-color;
       background-color: transparent;
     } 
   }
+  
+  @media (min-width: $grid-float-breakpoint) {
+    min-height: $navbar-height-breakpoint;
+  }
 }
+
+.navbar-nav {
+  
+  @media (min-width: $grid-float-breakpoint) {
+    margin-right: 70px;
+    margin-top: ((($navbar-height-breakpoint - $line-height-computed) / 2) / 2);
+    margin-bottom: ((($navbar-height-breakpoint - $line-height-computed) / 2) / 2);
+  }
+}  
+
+$theFacebookHeight: 34px;
+#facebook {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  right: 15px;
+  top: (($navbar-height - $theFacebookHeight) / 2);
+  bottom: (($navbar-height - $theFacebookHeight) / 2);
+  height: $theFacebookHeight;
+  width: $theFacebookHeight;
+  vertical-align: middle;
+  font-size: 28px;
+  line-height: $theFacebookHeight;
+  @media (min-width: $grid-float-breakpoint) {
+    top: (($navbar-height-breakpoint - $theFacebookHeight) / 2);
+    bottom: (($navbar-height-breakpoint - $theFacebookHeight) / 2);
+  }
+}
+
 .navbar-brand {
-  padding: 6px 15px;
+  padding: 0 15px;
+  height: auto;
+  @include navbar-vertical-align(34px);
+  @media (min-width: $grid-float-breakpoint) {
+    padding: 6px 15px;
+  }
 }
 
 .navbar-default .navbar-brand {
@@ -25,13 +63,13 @@
     border-left: 4px solid $theme-color;
     border-right: 4px solid $theme-color;
     border-top: 4px solid $theme-color;
+    border-bottom: 4px solid $theme-color;
     padding: 4px;
     display: inline-block;
     @include transition(all 0.3s ease-in-out);
   }
   span + span {
-    border-bottom: 4px solid $theme-color;
-    display: block;
+    border-left: none;
   }
   &:hover {
     span {
@@ -39,7 +77,42 @@
       background-color: $theme-color;
     }
   }
+  
+  @media (min-width: $grid-float-breakpoint) {
+    span {
+      border-bottom: none;
+    }
+    span + span {
+      display: block;
+      border-bottom: 4px solid $theme-color;
+      border-left: 4px solid $theme-color;
+    }
+  }
 }
+
+.navbar-toggle {
+  margin-right: 70px;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: $theme-color;
+  border: 4px solid $theme-color;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  vertical-align: middle;
+  //@include navbar-vertical-align(12px);
+}
+
+.navbar-default .navbar-toggle {
+  &:hover,
+  &:focus {
+    color: $body-bg;
+    .icon-bar {
+      background-color: $body-bg;
+    }
+  }
+}
+
 
 /* CUSTOMIZE THE LANGUAGE MENU
 -------------------------------------------------- */

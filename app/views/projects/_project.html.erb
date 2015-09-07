@@ -1,13 +1,16 @@
-<% collection_row_cache(project) do %>
-<article class="col-xs-12 col-sm-6 col-md-4 mix <%= project.categories.map {|c| c.title.parameterize }.join(" ") %>">
-  <%= link_to(project.public_url, :class => "thumbnail #{'active' if project.id == @project.id}", :remote => true) do %>
+<%# collection_row_cache(project) do %>
+<article class="col-xs-6 col-sm-6 col-md-4 mix <%= project.categories.map {|c| c.title.parameterize }.join(" ") %>" data-category="<%= project.categories.map {|c| c.title.parameterize }.join(" ") %>">
+  <%#= link_to(project.public_url, :class => "thumbnail #{'active' if project.id == @project.id}", :remote => true) do %>
+  <%= link_to(project.public_url, :class => "thumbnail", :remote => true) do %>
     <% if project.thumbnail && !project.thumbnail.video_url.blank? %>
       <div class="thumbnail-vid">
-        <iframe src="//player.vimeo.com/video/<%= project.thumbnail.video_url %>?title=0&amp;byline=0&amp;portrait=0&amp;autoplay=0&amp;loop=0" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe id="player" class="embed-responsive-item" src="//player.vimeo.com/video/<%= project.thumbnail.video_url %>?api=1&amp;color=1201ff&amp;title=0&amp;byline=0&amp;portrait=0&amp;autoplay=0&amp;loop=0"></iframe>
+        </div>
       </div>
     <% elsif project.thumbnail %>
       <%= content_tag(:div, :class => "thumbnail-img") do %>
-        <%= image_tag(project.thumbnail.thumbnail(device_type == :desktop ? "x325" : "x230").url(), 
+        <%= image_tag(project.thumbnail.thumbnail(device_type == :desktop ? "434x325#" : "306x230#").url(), 
             :alt => project.thumbnail.title, 
             :class => "img-responsive") %>
       <% end %>
@@ -22,4 +25,5 @@
     <span class="border border-right"></span>
   <% end %>
 </article>
-<% end %>
+
+<%# end %>
