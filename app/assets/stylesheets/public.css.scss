@@ -33,8 +33,9 @@ $navbar-height-breakpoint: 78px;
 	filter: url(/img/grayscale.svg);
 	filter: gray;
 }
-body {
+body, html {
   position: relative;
+  min-height: 100%;
 }
 /* FIX FOR GMAP BUG
 -------------------------------------------------- */
@@ -73,26 +74,11 @@ a, button {
 #page-wrapper {
   //min-height: 100%;
   position: relative;
+  min-height: 100%;
 }
 
 /* VIDEO
 -------------------------------------------------- */
-
-#project-wrapper {
-  position: fixed;
-  z-index: -1;
-  width: 100%;
-  overflow: hidden;
-  top: 0;
-  left: 0;
-}
-
-#project-container {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
 #btn-categories {
   position: fixed;
   z-index: $zindex-navbar-fixed - 1;
@@ -101,7 +87,6 @@ a, button {
   right: 0;
   border-radius: 0;
   display: block;
-  width: 100%;
   .icon {
     display: none;
   }
@@ -117,24 +102,24 @@ $off-canvas-width: 100.5%;
   z-index: $zindex-navbar-fixed - 2;
   top: $navbar-height;
   left: 0;
-  bottom: 0;
-  right: 0;
-  padding: 20px;
-  background-color: $body-bg;
+  height: 100%;
   box-sizing: content-box;
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: -ms-autohiding-scrollbar;
   overflow-x: hidden;
   overflow-y: auto;
+  padding: 20px;
+  background-color: $body-bg;
   @include translate(- $off-canvas-width, 0);
   @include translate3d(- $off-canvas-width, 0, 0);
   @include transition-transform(300ms ease);
   @include backface-visibility(hidden);
+
   @media (min-width: $grid-float-breakpoint) {
     top: 82px;
-    height: auto;
-    bottom: auto;
-    right: auto;
+    //height: auto;
+    //bottom: auto;
+    //right: auto;
     background-color: transparent;
     @include translate(0, 0);
     @include translate3d(0, 0, 0);
@@ -146,9 +131,7 @@ body.off-canvas-open {
     @include translate3d(0, 0, 0);
   }
   #btn-categories {
-    .icon {
-      display: inline-block;
-    }
+    .icon { display: inline-block; }
   }
 }   
     
@@ -172,13 +155,6 @@ body.off-canvas-open {
   .list-categories > li > a {
     font-size: 24px;
   }
-}
-
-#projects-wrapper {
-  z-index: -1;
-  margin-top: 100%;
-  border-top: 6px solid $theme-color;
-  background-image:  url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc3JyBoZWlnaHQ9JzE0JyB2aWV3Qm94PScwIDAgNSAxMCc+Cgk8cmVjdCB3aWR0aD0nMTEwJScgeD0nLTUlJyB5PSctNSUnIGhlaWdodD0nMTEwJScgZmlsbD0nI2RhZGJkOCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nMScgeDI9JzcnIHkyPScxMCcgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nNicgeDI9JzcnIHkyPScxNScgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nLTQnIHgyPSc3JyB5Mj0nNScgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgo8L3N2Zz4=');
 }
 
 #category-description {

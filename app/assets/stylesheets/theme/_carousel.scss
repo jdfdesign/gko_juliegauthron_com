@@ -24,12 +24,13 @@
   }
   @media (min-width: $grid-float-breakpoint) {
     overflow: hidden;
-    position: absolute;
+    //position: absolute;
     z-index: 1;
-    top: 10%;
-    left: 10%;
-    right: 10%;
-    bottom: 10%;
+    //top: 10%;
+    //left: 10%;
+    //right: 10%;
+    //bottom: 10%;
+    margin: 8% 10%;
   }
   
   @media only screen and (max-device-width: 800px), only screen and (device-width: 1024px) and (device-height: 600px), only screen and (width: 1280px) and (orientation: landscape), only screen and (device-width: 800px), only screen and (max-width: 767px) {

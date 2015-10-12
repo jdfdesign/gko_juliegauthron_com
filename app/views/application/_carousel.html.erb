@@ -1,14 +1,23 @@
   <!-- to avoid carousel automatically cycle we set data-interval to false -->
   <div id="project-carousel" class="carousel slide" data-interval="false">
     <div class="carousel-inner">
-      <% images.each_with_index do |img, index| %>
+      <% images.each_with_index do |img, index| 
+          geom = case device_type
+          when :mobile
+            img.portrait? ? "x320" : "480x320#"
+          when :tablet
+            img.portrait? ? "x768" : "1024x768#"
+          else
+            img.portrait? ? "x900" : "1200x900#"
+          end
+      %>
         <div class="item <%= 'active' if index == 0 %>">
           <% if !img.video_url.blank? %>
             <div class="item active flex-video vimeo" style="margin: 0 auto;text-align:center;">
               <iframe src="http://player.vimeo.com/video/<%= img.video_url %>?title=0&amp;byline=0&amp;portrait=0&amp;autoplay=0&amp;loop=0&amp;api=1"></iframe>
             </div>
           <% else %>
-            <%= image_fu(img, device_type == :desktop ? "1200x" : "480x320#", :rel => "external") %>
+            <%= image_fu(img, geom, :rel => "external") %>
           <% end %>
         </div>
       <% end %>

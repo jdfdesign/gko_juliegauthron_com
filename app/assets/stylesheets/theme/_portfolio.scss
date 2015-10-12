@@ -1,3 +1,14 @@
+#projects-wrapper {
+  //z-index: -1;
+  //margin-top: 100%;
+  position: relative;
+  min-height: 100%;
+  margin-top: 68%;
+  border-top: 6px solid $theme-color;
+  background-image:  url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc3JyBoZWlnaHQ9JzE0JyB2aWV3Qm94PScwIDAgNSAxMCc+Cgk8cmVjdCB3aWR0aD0nMTEwJScgeD0nLTUlJyB5PSctNSUnIGhlaWdodD0nMTEwJScgZmlsbD0nI2RhZGJkOCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nMScgeDI9JzcnIHkyPScxMCcgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nNicgeDI9JzcnIHkyPScxNScgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nLTQnIHgyPSc3JyB5Mj0nNScgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgo8L3N2Zz4=');
+}
+
+
 .projects {
   margin-top: $line-height-computed;
 }
@@ -43,6 +54,13 @@
     width: 100%;
   }
 }
+#close-btn {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: -36px;
+}
+
 .no-touch {
   .thumbnail {
     .thumbnail-heading {
@@ -106,17 +124,13 @@
   z-index: -1;
   width: 100%;
   overflow: hidden;
-  top: 0;
+  top: $navbar-height;
   left: 0;
-  margin-top: $navbar-height;
-  padding-left: 0;
-  padding-right: 0;
+  padding: 0;
   background-color: $body-bg;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc3JyBoZWlnaHQ9JzE0JyB2aWV3Qm94PScwIDAgNSAxMCc+Cgk8cmVjdCB3aWR0aD0nMTEwJScgeD0nLTUlJyB5PSctNSUnIGhlaWdodD0nMTEwJScgZmlsbD0nI2RhZGJkOCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nMScgeDI9JzcnIHkyPScxMCcgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nNicgeDI9JzcnIHkyPScxNScgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nLTQnIHgyPSc3JyB5Mj0nNScgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgo8L3N2Zz4=');
-  @media (min-width: $grid-float-breakpoint) {
-    margin-top: $navbar-height-breakpoint;
-  }
 }
+
 
 .project-header {
   border-bottom: 0;
@@ -145,12 +159,6 @@
     z-index: 3;
     top: 6%;
     right: 15%;
-  }
-}
-
-@media (min-width: $screen-sm-min) {
-  #project-wrapper {
-    height: 100%;
   }
 }
 

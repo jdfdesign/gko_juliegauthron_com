@@ -14,7 +14,8 @@ var map;
 jQuery(function($) {
   'use strict';
   var THEME = window.THEME || {
-    filterState: "all"
+    filterState: "all",
+    mode: "video"
   };
   var winHeight = 0;
   var navbarHeight = 0;
@@ -55,14 +56,10 @@ jQuery(function($) {
 
       } else {
         that.find('.carousel-control').each(function(index) {
-          $(this).css({
-            display: 'none'
-          })
+          $(this).css({ display: 'none' })
         })
         that.find('.carousel-indicators').each(function(index) {
-          $(this).css({
-            display: 'none'
-          })
+          $(this).css({ display: 'none' })
         })
       }
 
@@ -87,20 +84,36 @@ jQuery(function($) {
   // ON RESIZE
   // ==================================================
 
-  THEME.resizing = function() {
-    navbarHeight = $(".navbar").height();
-    winHeight = $(window).outerHeight();
-    var theHeight = winHeight - navbarHeight;
+  THEME.getScreenHeight = function() {
+    var navbarHeight = $(".navbar").height();
+    var winHeight = $(window).outerHeight();
+    return Math.round(winHeight - navbarHeight);
+  }
+  
+  // ON RESIZE
+  // ==================================================
 
-    console.log(winHeight);
-    if ($(window).width() > 768) {
-      $('#project-wrapper').css({
-        'height': theHeight
-      });
-    } else {
-      $('#project-wrapper').css({
-        'height': 'auto'
-      });
+  THEME.resizing = function() {
+    var navbarHeight = $(".navbar").height(),
+        winHeight = $(window).outerHeight(),
+        $carousel = $("#project-carousel"),
+        $project = $('#project-wrapper');
+    
+    $project.css({ 'top': navbarHeight });
+    
+    if( $(window).outerWidth() > 768 ) {
+      $carousel.css("max-height", Math.round(THEME.getScreenHeight() * 0.8) );
+    }
+    
+    $('#projects-wrapper').css("min-height", THEME.getScreenHeight());
+    
+    if(THEME.mode == "video") {
+      var bottomProject = Math.round( $("#player").height() + navbarHeight );
+      $('#projects-wrapper').css({ 'margin-top': bottomProject });
+    }
+    else {
+      var bottomProject = Math.round( $('#project-wrapper').outerHeight(true) + navbarHeight );
+      $('#projects-wrapper').css({ 'margin-top': bottomProject });
     }
   };
 
@@ -108,13 +121,13 @@ jQuery(function($) {
   // ==================================================
 
   THEME.update = function() {
-    $('#previous-project, #next-project').on("click", function(e) {
+    /* $('#previous-project, #next-project').on("click", function(e) {
       var myElement = $("a.thumbnail[href='" + $(this).attr("href") + "']");
       if (myElement.length) {
         myElement.trigger("click");
       }
       e.preventDefault();
-    });
+    }); */
   };
   
   /*==================================================
@@ -131,8 +144,13 @@ jQuery(function($) {
     $projects.mixItUp({
       targetDisplayGrid: 'block', // required to fix bug in Chrome with images height
       callbacks: {
+        onMixLoad: function(state) {
+          console.log("onMixLoad " + state.activeFilter);
+          $('body, html').animate({ scrollTop: 0 }, 1500, 'easeOutExpo');
+        },
+        
         onMixEnd: function(state) {
-          console.log(state.activeFilter);
+          console.log("onMixEnd " + state.activeFilter);
           if(state.activeFilter == $projects.mixItUp('getOption', 'selectors.target')) {
             $("#category-title").html($('a[data-filter]:first').text());
             $("#category-description").html("");
@@ -140,13 +158,31 @@ jQuery(function($) {
             var target = $('a[data-filter="' + state.activeFilter  + '"]');
             $("#category-title").html(target.text());
             $("#category-description").html(target.data("text"));
+            
           }
-          $('body, html').animate({
-            scrollTop: Math.round($("#projects-wrapper").offset().top) - 200
-          }, 1500, 'easeOutExpo');
+          
+          var t = 0;
+          
+          if((THEME.getScreenHeight() + $("#projects-wrapper").position().top) > 0) {
+            t = 80;
+          } else {
+            t = THEME.getScreenHeight() - 100;
+          }
+          
+          //console.log(t)
+          
+          $('body, html').animate({ scrollTop: t }, 1500, 'easeOutExpo', function() {
+            $("#close-btn").show();
+          });
         }
       }
     });
+    
+    $("#close-btn").on("click", function(e){
+      $("#projects-wrapper").animate({ scrollTop: 0 }, 1500, 'easeOutExpo', function() {
+        $("#close-btn").hide();
+      });
+    })
     
     $('a[data-filter]').on("click", function(e){
       if($("body").hasClass('off-canvas-open')) {
@@ -162,15 +198,15 @@ jQuery(function($) {
 
     $(".thumbnail").on("ajax:beforeSend", function(evt, xhr, settings) {
       if ($(this).hasClass("active")) {
-        return
+        return;
       };
       $('.thumbnail').removeClass("active");
       $(this).addClass("active");
       $("#project-container").hide();
       $(".throbber_page").show();
-      $('body, html').animate({
-        scrollTop: "0"
-      }, 1500, 'easeOutExpo');
+      $('body, html').stop().animate({ scrollTop: 0 }, 1500, 'easeOutExpo', function(){
+        console.log("Finish");
+      });
     })
       .on("ajax:success", function(evt, xhr, settings) {
         var that = $(this),
@@ -184,22 +220,25 @@ jQuery(function($) {
         } else {
           console.log("_gaq disabled for _trackPageview" + url)
         }
-
+        
         $container.html(eval(xhr));
+        THEME.mode = "project";
         THEME.update();
         THEME.placeholder();
         THEME.carousel();
         
+        
         // Check image loaded to adjust thmbnails height
         $('#project-carousel').imagesLoaded()
           .always(function(instance) {
+            THEME.resizing();
             $(".throbber_page").hide();
           });
         
         var category = that.parent().data('category');
         
         console.log("category: " + category);
-            
+
         $container.show();
 
         try {
@@ -229,37 +268,18 @@ jQuery(function($) {
 
     ///////////////////////////////////////////////////////
     // Handle Window Resizing
+    
     $(window).resize(function() {
       THEME.resizing();
     })
+    
+    $('#projects-wrapper').imagesLoaded()
+      .always(function(instance) {
+        console.log("ok")
+        THEME.resizing();
+    });
 
-    $(window).trigger('resize');
+    //$(window).trigger('resize');
 
   });
-});
-
-$(function() {
-  var state;
-  var iframe = $('#player')[0];
-  var player = $f(iframe);
-  console.log(player);
-  player.addEvent('ready', function() {
-    //status.text('ready');
-    console.log('ready');
-    player.addEvent('ready', onPause);
-    player.addEvent('finish', onFinish);
-    player.addEvent('playProgress', onPlayProgress);
-  });
-
-  function onPause(id) {
-    console.log('paused');
-  }
-
-  function onFinish(id) {
-    console.log('finished');
-  }
-
-  function onPlayProgress(data, id) {
-    console.log(data.seconds + 's played');
-  }
 });
