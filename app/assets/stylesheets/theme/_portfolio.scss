@@ -127,20 +127,26 @@
   top: $navbar-height;
   left: 0;
   padding: 0;
-  background-color: $body-bg;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc3JyBoZWlnaHQ9JzE0JyB2aWV3Qm94PScwIDAgNSAxMCc+Cgk8cmVjdCB3aWR0aD0nMTEwJScgeD0nLTUlJyB5PSctNSUnIGhlaWdodD0nMTEwJScgZmlsbD0nI2RhZGJkOCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nMScgeDI9JzcnIHkyPScxMCcgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nNicgeDI9JzcnIHkyPScxNScgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nLTQnIHgyPSc3JyB5Mj0nNScgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgo8L3N2Zz4=');
 }
 
+#project-carousel {
+  overflow: hidden;
+  display: block;
+}
 
 .project-header {
   border-bottom: 0;
   color: $brand-primary;
+  padding-right: 20px;
+  padding-left: 20px;
   @include center-block();
   @media (min-width: $grid-float-breakpoint) {
     position: absolute;
     z-index: 3;
     top: 15%;
     right: 10px;
+    padding-right: 0;
+    padding-left: 0;
     max-width: 300px;
   }
 }
@@ -154,11 +160,17 @@
 }
 
 .share-project {
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-bottom: 20px;
   @media (min-width: $grid-float-breakpoint) {
     position: absolute;
     z-index: 3;
     top: 6%;
     right: 15%;
+    padding-right: 0;
+    padding-left: 0;
+    padding-bottom: 0;
   }
 }
 

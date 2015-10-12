@@ -1,6 +1,4 @@
 .carousel {
-
-  
   .flex-video {
     position: relative;
     padding-top: 25px;
@@ -24,12 +22,7 @@
   }
   @media (min-width: $grid-float-breakpoint) {
     overflow: hidden;
-    //position: absolute;
     z-index: 1;
-    //top: 10%;
-    //left: 10%;
-    //right: 10%;
-    //bottom: 10%;
     margin: 8% 10%;
   }
   
@@ -61,8 +54,30 @@
   overflow: hidden;
   display: none;
 }
+.carousel-control {
+  bottom: 20px;
+  color: $carousel-indicator-border-color;
+  top: auto;
+  font-size: 30px;
+  display: none;
+  &.left {
+    left: 20px;
+    background-image: none;
+  }
+  &.right {
+    right: 20px;
+    background-image: none;
+  }
+}
+
+.no-touch {
+  .carousel-control {
+    display: block;
+  }
+}
+
 .carousel-indicators {
-  bottom: 10%;
+  bottom: 20px;
   li {
     width:  22px;
     height: 22px;

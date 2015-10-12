@@ -37,6 +37,10 @@ body, html {
   position: relative;
   min-height: 100%;
 }
+
+body {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc3JyBoZWlnaHQ9JzE0JyB2aWV3Qm94PScwIDAgNSAxMCc+Cgk8cmVjdCB3aWR0aD0nMTEwJScgeD0nLTUlJyB5PSctNSUnIGhlaWdodD0nMTEwJScgZmlsbD0nI2RhZGJkOCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nMScgeDI9JzcnIHkyPScxMCcgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nNicgeDI9JzcnIHkyPScxNScgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nLTQnIHgyPSc3JyB5Mj0nNScgc3Ryb2tlPScjMTIwMWZmJyBzdHJva2Utd2lkdGg9JzAuNCcvPgo8L3N2Zz4=');
+}
 /* FIX FOR GMAP BUG
 -------------------------------------------------- */
 #map-canvas {
@@ -117,9 +121,7 @@ $off-canvas-width: 100.5%;
 
   @media (min-width: $grid-float-breakpoint) {
     top: 82px;
-    //height: auto;
-    //bottom: auto;
-    //right: auto;
+    height: auto;
     background-color: transparent;
     @include translate(0, 0);
     @include translate3d(0, 0, 0);

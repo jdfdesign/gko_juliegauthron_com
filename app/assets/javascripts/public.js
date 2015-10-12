@@ -3,23 +3,20 @@
 //= require jquery.easing
 //= require jquery.mixitup
 //= require jquery.imagesloaded
-//= require bootstrap-hover-dropdown.js
+//= require jquery.touchSwipe
 
 // make console.log safe to use
 window.console || (console = {
   log: function() {}
 });
-var map;
+
+window.THEME || (THEME = {
+  filterState: "all",
+  mode: "video"
+});
 
 jQuery(function($) {
   'use strict';
-  var THEME = window.THEME || {
-    filterState: "all",
-    mode: "video"
-  };
-  var winHeight = 0;
-  var navbarHeight = 0;
-
 
   /* ==================================================
   	Fix
@@ -29,10 +26,8 @@ jQuery(function($) {
     // fix for ie device_width bug 
     if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
       var msViewportStyle = document.createElement("style");
-      msViewportStyle.appendChild(
-        document.createTextNode("@-ms-viewport{width:auto!important}"));
-      document.getElementsByTagName("head")[0].
-      appendChild(msViewportStyle);
+      msViewportStyle.appendChild(document.createTextNode("@-ms-viewport{width:auto!important}"));
+      document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
     }
   };
   /* ==================================================
@@ -78,6 +73,19 @@ jQuery(function($) {
 
       });
     });
+    
+  //Enable swiping...
+		$(".carousel-inner").swipe( {
+			//Generic swipe handler for all directions
+			swipeLeft:function(event, direction, distance, duration, fingerCount) {
+				$(this).parent().carousel('prev'); 
+			},
+			swipeRight: function() {
+				$(this).parent().carousel('next'); 
+			},
+			//Default is 75px, set to 0 for demo so any distance triggers swipe
+			threshold:0
+		});
 
   };
 
@@ -97,7 +105,9 @@ jQuery(function($) {
     var navbarHeight = $(".navbar").height(),
         winHeight = $(window).outerHeight(),
         $carousel = $("#project-carousel"),
-        $project = $('#project-wrapper');
+        $project = $('#project-wrapper'),
+        $projects = $('#projects-wrapper'),
+        projectsTop = 0;
     
     $project.css({ 'top': navbarHeight });
     
@@ -105,52 +115,39 @@ jQuery(function($) {
       $carousel.css("max-height", Math.round(THEME.getScreenHeight() * 0.8) );
     }
     
-    $('#projects-wrapper').css("min-height", THEME.getScreenHeight());
-    
     if(THEME.mode == "video") {
-      var bottomProject = Math.round( $("#player").height() + navbarHeight );
-      $('#projects-wrapper').css({ 'margin-top': bottomProject });
+      projectsTop = Math.round( $("#player").height() + navbarHeight );
     }
     else {
-      var bottomProject = Math.round( $('#project-wrapper').outerHeight(true) + navbarHeight );
-      $('#projects-wrapper').css({ 'margin-top': bottomProject });
+      projectsTop = Math.round( $project.outerHeight(true) + navbarHeight );
     }
+    
+    $projects.css({ 'margin-top': projectsTop, "min-height": THEME.getScreenHeight() });
   };
 
-  // ON RESIZE
-  // ==================================================
-
-  THEME.update = function() {
-    /* $('#previous-project, #next-project').on("click", function(e) {
-      var myElement = $("a.thumbnail[href='" + $(this).attr("href") + "']");
-      if (myElement.length) {
-        myElement.trigger("click");
-      }
-      e.preventDefault();
-    }); */
-  };
-  
   /*==================================================
   	Init
-==================================================*/
+  ==================================================*/
 
   $(document).ready(function() {
 
-    var isHome = true;
     var $projects = $(".projects");
-    var $projectsWrapper = $("#projects-wrapper");
 
     // Enable categories filter
     $projects.mixItUp({
       targetDisplayGrid: 'block', // required to fix bug in Chrome with images height
       callbacks: {
+        
         onMixLoad: function(state) {
           console.log("onMixLoad " + state.activeFilter);
-          $('body, html').animate({ scrollTop: 0 }, 1500, 'easeOutExpo');
-        },
+          $('body, html').animate({ scrollTop: 0 }, 1500, 'easeOutExpo', function() {
+            $("#close-btn").show();
+          });
+        }
         
-        onMixEnd: function(state) {
+        ,onMixEnd: function(state) {
           console.log("onMixEnd " + state.activeFilter);
+          
           if(state.activeFilter == $projects.mixItUp('getOption', 'selectors.target')) {
             $("#category-title").html($('a[data-filter]:first').text());
             $("#category-description").html("");
@@ -160,11 +157,13 @@ jQuery(function($) {
             $("#category-description").html(target.data("text"));
             
           }
-          
+          //console.log(THEME.getScreenHeight())
+          //console.log($("#projects-wrapper").position().top)
+          //console.log((THEME.getScreenHeight() + $("#projects-wrapper").position().top))
           var t = 0;
           
           if((THEME.getScreenHeight() + $("#projects-wrapper").position().top) > 0) {
-            t = 80;
+            t = Math.abs($("#projects-wrapper").position().top) - 180;
           } else {
             t = THEME.getScreenHeight() - 100;
           }
@@ -176,6 +175,7 @@ jQuery(function($) {
           });
         }
       }
+      
     });
     
     $("#close-btn").on("click", function(e){
@@ -193,9 +193,9 @@ jQuery(function($) {
     $("#btn-categories").on("click", function(e) {
       $("body").toggleClass('off-canvas-open');
     })
-
-    THEME.update();
-
+    
+    // =================================================
+    // Ajax calls on thumbnail
     $(".thumbnail").on("ajax:beforeSend", function(evt, xhr, settings) {
       if ($(this).hasClass("active")) {
         return;
@@ -208,60 +208,47 @@ jQuery(function($) {
         console.log("Finish");
       });
     })
-      .on("ajax:success", function(evt, xhr, settings) {
-        var that = $(this),
+    .on("ajax:success", function(evt, xhr, settings) {
+      var that = $(this),
           url = that.attr('href'),
           $container = $("#project-container");
 
-        history.pushState(null, null, url);
+      history.pushState(null, null, url);
 
-        if (typeof(_gaq) != "undefined") {
-          _gaq.push(['_trackPageview', url]);
-        } else {
-          console.log("_gaq disabled for _trackPageview" + url)
+      if (typeof(_gaq) != "undefined") {
+        _gaq.push(['_trackPageview', url]);
+      } else {
+        console.log("_gaq disabled for _trackPageview" + url)
+      }
+    
+      $container.html(eval(xhr));
+      THEME.mode = "project";
+      THEME.placeholder();
+      THEME.carousel();
+    
+      // Check image loaded to adjust thmbnails height
+      $('#project-carousel').imagesLoaded()
+        .always(function(instance) {
+          THEME.resizing();
+          $(".throbber_page").hide();
         }
-        
-        $container.html(eval(xhr));
-        THEME.mode = "project";
-        THEME.update();
-        THEME.placeholder();
-        THEME.carousel();
-        
-        
-        // Check image loaded to adjust thmbnails height
-        $('#project-carousel').imagesLoaded()
-          .always(function(instance) {
-            THEME.resizing();
-            $(".throbber_page").hide();
-          });
-        
-        var category = that.parent().data('category');
-        
-        console.log("category: " + category);
+      );
 
-        $container.show();
+      $container.show();
 
-        try {
-          FB.XFBML.parse();
-        } catch (e) {
-          console.log("FB error");
-        }
-      })
-      .on("ajax:error", function(evt, xhr, status, error) {
-        var flash = $.parseJSON(xhr.getResponseHeader('X-Flash-Messages'));
-        console.log("Site.error " + flash.error);
-      });
-
-
-    $('.testimonial-title > span').each(function() {
-      var $object = $('> span', this);
-      var delay = Math.floor((Math.random() * 450)) + ($(this).index() * 150);
-
-      setTimeout(function() {
-        $object.width($object.parent().width());
-      }, delay);
+      try {
+        FB.XFBML.parse();
+      } catch (e) {
+        console.log("FB error");
+      }
+    })
+    .on("ajax:error", function(evt, xhr, status, error) {
+      var flash = $.parseJSON(xhr.getResponseHeader('X-Flash-Messages'));
+      console.log("Site.error " + flash.error);
     });
 
+
+    // Apply fix
     THEME.fix();
     THEME.placeholder();
     THEME.carousel();
@@ -275,11 +262,10 @@ jQuery(function($) {
     
     $('#projects-wrapper').imagesLoaded()
       .always(function(instance) {
-        console.log("ok")
         THEME.resizing();
     });
-
-    //$(window).trigger('resize');
-
+    
+    THEME.resizing();
+    
   });
 });
