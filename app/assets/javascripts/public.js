@@ -30,6 +30,7 @@ jQuery(function($) {
       document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
     }
   };
+  
   /* ==================================================
   	Placeholder
   ================================================== */

@@ -1,0 +1,83 @@
+/* TESTIMONIALS
+-------------------------------------------------- */
+
+.testimonials {
+  padding-top: 30px;
+  .item {
+    margin-bottom: 30px;
+    
+    .post-title {
+      position: relative;
+      padding-left: 50px;
+      margin-bottom: 0;
+      i {
+        position: absolute;
+        z-index: 1;
+        left: 0;
+        top: -12px;
+        font-size: 40px;
+      }
+    }
+    .company {
+      color: $brand-primary;
+      font-weight: 700;
+      padding-left: 50px;
+      text-transform: uppercase;
+    }
+    .meta,
+    .copy-text {
+      padding-left: 50px;
+    }
+  }
+  
+}
+.testimonial {
+  padding-top: 30px;
+  padding-right: 60px;
+  
+  .meta-author {
+    color: $brand-primary;
+    font-weight: 700;
+    font-size: 22px;
+  }
+  
+  .meta-company {
+    color: $brand-primary;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+}
+.testimonial-title {
+  max-width: 300px;
+  text-align: right;
+  float: right;
+  text-transform: uppercase;
+  position: relative;
+  > span {
+    display: block;
+    clear: left;
+    float: left;
+    position: relative;
+    white-space: nowrap;
+  }
+  > span > span {
+    -moz-transition-duration: .55s;
+    -moz-transition-property: width;
+    -moz-transition-delay: 0s;
+    -moz-transition-timing-function: linear;
+    -webkit-transition-duration: .55s;
+    -webkit-transition-property: width;
+    -webkit-transition-delay: 0s;
+    -webkit-transition-timing-function: linear;
+    transition-duration: .55s;
+    transition-property: width;
+    transition-delay: 0s;
+    transition-timing-function: linear;
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    background: $theme-color;
+    width: 0;
+    height: 4px;
+  }
+}

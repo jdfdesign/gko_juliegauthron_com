@@ -6,12 +6,13 @@
   <% end if parent.body.present? %>
 </div>
 <div class="container">
-  <div class="row">
+  <div class="row testimonials">
   <% collection.each do |item| %>                           
-    <article class="col-sm-12 testimonial">
+    <article class="col-sm-12 item">
       <h2 class="post-title"><i class="fa fa-quote-left"></i> <%= link_to(item.author, item.public_url) %></h2>
-      <div class="copy-text"><%= item.excerpt.html_safe %></div>
-      <div class="meta"><%= item.title %></div>
+      <%= content_tag :div, :class => "company" do %>
+        <% raw item.company %>
+      <% end if item.company.present? %>
     </article>
   <% end %>
   </div> 

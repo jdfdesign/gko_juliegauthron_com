@@ -1,15 +1,18 @@
 <div class="page-header">
   <%= render_page_title(resource.title) %>
 </div>
-
 <div class="container">
   <div class="row">                        
     <article class="col-sm-12 testimonial">
-      
       <%= content_tag :p, :class => "lead" do %>
         <% raw resource.body %>
       <% end if resource.body.present? %>
-      <div class="meta"><%= resource.author %></div>
+      <%= content_tag :div, :class => "meta-author" do %>
+        <% raw resource.author %>
+      <% end if resource.author.present? %>
+      <%= content_tag :div, :class => "meta-company" do %>
+        <% raw resource.company %>
+      <% end if resource.company.present? %>
     </article>
   </div> 
 </div>
